@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoey/provider/save_task.dart';
 import 'package:todoey/widgets/bottom_sheet.dart';
-import 'package:todoey/widgets/task.dart';
+import 'package:todoey/model/task.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _controller = TextEditingController();
 
   void addNewTask() {
-    context.read<SaveTask>().addTask(
+    context.read<TaskController>().saveTask(
           Task(
             taskName: _controller.text,
             taskCompleted: false,
@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onDeleteTask(Task task) {
-    context.read<SaveTask>().deleteTask(task);
+    context.read<TaskController>().deleteTask(task);
   }
 
   @override
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Text(
-                  '${Provider.of<SaveTask>(context).taskCount} Tasks',
+                  '${Provider.of<TaskController>(context).taskCount} Tasks',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   topRight: Radius.circular(30),
                 ),
               ),
-              child: Consumer<SaveTask>(
+              child: Consumer<TaskController>(
                 builder: (context, task, child) {
                   return ListView.builder(
                     itemCount: task.taskCount,
